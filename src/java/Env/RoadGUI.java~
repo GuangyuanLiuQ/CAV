@@ -1,0 +1,137 @@
+package CAV_Env;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class RoadGUI extends JFrame{
+    private RoadScenario scenario = new RoadScenario();
+    private JTextField m_speedTextField = new JTextField(Integer.toString(RoadScenarioVar.m_speedVehicle));
+    private JSlider   m_speedSlider = new JSlider(1,10);
+    private JButton m_btnVehicle  = new JButton("Pause");
+    private JButton m_btnFrame    = new JButton("ReStart");
+    //private JTextArea m_score = new JTextArea(50,50); //display the total score
+
+    public RoadGUI()
+    {
+        super("CAV");
+        setLayout(null);
+        setSize(RoadScenarioVar.j_FrameWidth, RoadScenarioVar.j_FrameHeight);
+
+        scenario.setLayout(null);
+        add(scenario);
+		
+		m_btnVehicle.setFont(m_btnVehicle.getFont().deriveFont(18.0f));
+		m_btnFrame.setFont(m_btnVehicle.getFont().deriveFont(18.0f));
+		m_speedTextField.setFont(m_btnVehicle.getFont().deriveFont(18.0f));
+		
+        AddButtons();
+        setVisible(true);
+    }
+
+    public void Update()
+    {
+        //m_score.setText(RoadScenarioVar.total_Score);  //total score
+		
+        if(RoadScenarioVar.m_Pause)
+            m_btnVehicle.setText("Pause");
+        else
+            m_btnVehicle.setText("Continue");
+		
+        m_btnFrame.setText("ReStart");
+		
+        repaint();
+    }
+
+    public void AddButtons()
+    {
+        m_btnVehicle.setBounds(800,510,100,30);         //Pause Button
+        m_btnVehicle.setLocation(800,510);
+        m_btnVehicle.addActionListener(new Btn1Handler());
+        add(m_btnVehicle);
+
+        m_btnFrame.setBounds(1100,510,100,30);		    //Restart Button
+        m_btnFrame.setLocation(1100,510);
+        m_btnFrame.addActionListener(new Btn2Handler());
+        add(m_btnFrame);
+		
+		m_speedTextField.setBounds(500,510,50,30);    //Text[0,1000]
+		m_speedTextField.setLocation(500,510);
+		
+        m_speedSlider.setBounds(550,510,100,30);       //Slider
+        m_speedSlider.setLocation(550,510);
+        m_speedSlider.setValue(RoadScenarioVar.m_speedVehicle/20);
+		
+        m_speedSlider.addChangeListener(new SpeedHandler());
+        add(m_speedTextField);
+        add(m_speedSlider);
+    }
+    
+private class SpeedHandler implements ChangeListener
+{
+    public void stateChanged(ChangeEvent e)
+    {
+        JSlider source = (JSlider)e.getSource();
+        RoadScenarioVar.m_speedVehicle = source.getValue()*20;
+        m_speedTextField.setText(Integer.toString(RoadScenarioVar.m_speedVehicle));
+    }
+}
+
+private class Btn1Handler implements ActionListener
+{
+    public void actionPerformed(ActionEvent e)
+    {   
+        if(RoadScenarioVar.m_Pause)
+			System.out.println("Switch to Pause!");
+        else
+			System.out.println("Switch to Continue!");
+        RoadScenarioVar.m_Pause = !RoadScenarioVar.m_Pause;
+		//public int speed1=RoadScenarioVa.m_speedVehicle;
+		/*if(RoadScenarioVar.m_Pause)
+		{
+			RoadScenarioVar.m_speedVehicle=20;
+		}
+		else
+		{
+			RoadScenarioVar.m_speedVehicle=10000;
+		}*/
+        Update();
+    }
+}
+
+public class Btn2Handler implements ActionListener
+{
+    public void actionPerformed(ActionEvent e)
+    {	
+				RoadScenarioVar.m_Frame = false;
+				RoadScenarioVar.g_vehicleMeter = 0;
+				RoadScenarioVar.g_vehicle2Meter = 0;
+				RoadScenarioVar.pedestrian1_verticle=0;
+				RoadScenarioVar.pedestrian1_parallel =1;
+				RoadScenarioVar.pedestrian2_verticle=0;
+				RoadScenarioVar.pedestrian2_parallel =1;
+				RoadScenarioVar.pedestrian3_verticle=0;
+				RoadScenarioVar.pedestrian3_parallel =1;
+				RoadScenarioVar.pedestrian4_verticle=0;
+				RoadScenarioVar.pedestrian4_parallel =1;
+				RoadScenarioVar.pedestrian5_verticle=0;
+				RoadScenarioVar.pedestrian5_parallel =1;
+				RoadScenarioVar.pedestrian6_verticle=0;
+				RoadScenarioVar.pedestrian6_parallel =1;
+				RoadScenarioVar.pedestrian_arrive = false; 
+				System.out.println("The scenario is rebuild!");
+				RoadScenarioVar.m_Frame = true;
+				RoadScenarioVar.vehicle_i=0;
+				RoadScenarioVar.total_Score1 = 2000;	
+				RoadScenarioVar.total_Score2 = 2000;	
+				RoadScenarioVar.total_Score3 = 2000;	
+				RoadScenarioVar.total_Score4 = 2000;	
+				RoadScenarioVar.total_Score5 = 2000;	
+				RoadScenarioVar.total_Score6 = 2000;	
+        Update();
+    }
+}
+}

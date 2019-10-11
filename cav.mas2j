@@ -1,0 +1,16 @@
+MAS cav {
+
+    infrastructure: Centralised
+
+    environment: CAV_Env.roadEnv
+
+    agents:
+        vehicle;
+		vehicle2;
+        pedestrian#10;
+		aslSourcePath: "src/asl"; 
+
+
+}
+
+
